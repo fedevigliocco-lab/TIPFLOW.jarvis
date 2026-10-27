@@ -97,3 +97,10 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .notice { border-left: 3px solid var(--accent); padding: 10px 14px; background: var(--panel); border-radius: 8px; margin-bottom: 16px; }
 .notice.bad { border-color: var(--bad); }
 .empty { color: var(--muted); padding: 24px; text-align: center; border: 1px dashed var(--line); border-radius: var(--radius); }
+
+.field {
+  width: 100%; font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin-top: 12px;
+}
+.logout { margin-left: auto; }
+.logout button { background: none; border: none; color: var(--muted); font: inherit; cursor: pointer; padding: 0; }

@@ -2,6 +2,8 @@
 
 Il gestionale ad agenti di Tipflow. Gli agenti preparano il lavoro, fede approva o rifiuta da "I tuoi da fare". Niente parte senza il suo sì.
 
+Il pannello è protetto da una password (`JARVIS_PASSWORD`). In locale, se non la imposti, resta aperto.
+
 ## Cosa c'è
 
 | Pagina | Cosa mostra |
@@ -40,7 +42,7 @@ Per far lavorare gli agenti serve una chiave dell'API di Claude in `ANTHROPIC_AP
 ## Metterlo online (prossimo passo)
 
 1. Database su [Neon](https://neon.tech) (piano gratuito): copia l'indirizzo in `DATABASE_URL`.
-2. Pannello su [Vercel](https://vercel.com) (piano gratuito), collegato a questo repository, con le variabili di `.env.example`.
+2. Pannello su [Vercel](https://vercel.com) (piano gratuito), collegato a questo repository, con le variabili di `.env.example`. `JARVIS_PASSWORD` è obbligatoria: senza, il pannello online resta chiuso.
 3. Per i giri programmati, Vercel Cron chiama `/api/agenti/<nome>` con l'intestazione `Authorization: Bearer <CRON_SECRET>`.
 
 Le chiavi vanno solo nelle impostazioni di Vercel o nel file `.env` locale, mai nel codice.
