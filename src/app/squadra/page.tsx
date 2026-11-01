@@ -1,5 +1,6 @@
 import { isRunnable } from "@/agents";
 import { runNow } from "@/app/actions";
+import { RunButton } from "@/components/RunButton";
 import { getDb } from "@/lib/db";
 import { when } from "@/lib/format";
 import { listAgents } from "@/lib/repo";
@@ -45,7 +46,7 @@ export default async function Squadra({
                   {a.status === "acceso" && isRunnable(a.id) && (
                     <form action={runNow} className="actions">
                       <input type="hidden" name="agent" value={a.id} />
-                      <button className="btn primary">Fai girare ora</button>
+                      <RunButton />
                     </form>
                   )}
                 </div>
