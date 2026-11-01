@@ -166,3 +166,16 @@ export function linkTarget(kind: LinkKind, settings: Settings): string | null {
   if (!site) return null;
   return /^https?:\/\//i.test(site) ? site : `https://${site}`;
 }
+
+// Il dominio scritto in JARVIS_PUBLIC_URL, ripulito: tiene solo "https://dominio", senza virgole,
+// spazi, barre o percorsi finiti lì per sbaglio (la tastiera del telefono ne aggiunge). null se non è un dominio.
+export function publicOrigin(value: string | undefined): string | null {
+  const first = value?.trim().split(/[\s,;]+/)[0]?.replace(/[.,;/]+$/, "");
+  if (!first) return null;
+  try {
+    const url = new URL(/^https?:\/\//i.test(first) ? first : `https://${first}`);
+    return url.hostname.includes(".") ? url.origin : null;
+  } catch {
+    return null;
+  }
+}

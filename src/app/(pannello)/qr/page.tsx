@@ -2,13 +2,13 @@ import { headers } from "next/headers";
 import QRCode from "qrcode";
 import { getDb } from "@/lib/db";
 import { number } from "@/lib/format";
-import { dailyStats, getSettings, linkTarget, qrStats, totalStats } from "@/lib/qr";
+import { dailyStats, getSettings, linkTarget, publicOrigin, qrStats, totalStats } from "@/lib/qr";
 import { addQr, savePage } from "./actions";
 
 // L'indirizzo dentro i QR: il dominio di Tipflow (JARVIS_PUBLIC_URL), oppure quello da cui si apre il pannello.
 async function publicBase(): Promise<string> {
-  const fromEnv = process.env.JARVIS_PUBLIC_URL?.replace(/\/+$/, "");
-  if (fromEnv) return /^https?:\/\//.test(fromEnv) ? fromEnv : `https://${fromEnv}`;
+  const fromEnv = publicOrigin(process.env.JARVIS_PUBLIC_URL);
+  if (fromEnv) return fromEnv;
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
   const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
@@ -22,7 +22,7 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
   const db = await getDb();
   const [settings, codes, totals, days] = await Promise.all([getSettings(db), qrStats(db), totalStats(db), dailyStats(db)]);
   const base = await publicBase();
-  const provisional = !process.env.JARVIS_PUBLIC_URL;
+  const provisional = !publicOrigin(process.env.JARVIS_PUBLIC_URL);
   const images = await Promise.all(
     codes.map(async (c) => {
       const url = `${base}/q/${c.code}`;

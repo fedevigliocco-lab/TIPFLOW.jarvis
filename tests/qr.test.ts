@@ -6,6 +6,7 @@ import {
   getSettings,
   isBot,
   linkTarget,
+  publicOrigin,
   qrStats,
   recordVisit,
   saveSettings,
@@ -74,5 +75,16 @@ describe("test di mercato con QR", () => {
     expect(a).not.toContain("1.2.3.4");
     expect(isBot("WhatsApp/2.23")).toBe(true);
     expect(isBot("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)")).toBe(false);
+  });
+
+  it("il dominio dei QR si ripulisce da virgole, spazi e percorsi", () => {
+    expect(publicOrigin("tipflowfilters.com")).toBe("https://tipflowfilters.com");
+    expect(publicOrigin("tipflowfilters.com,")).toBe("https://tipflowfilters.com");
+    expect(publicOrigin(" https://tipflowfilters.com/ ")).toBe("https://tipflowfilters.com");
+    expect(publicOrigin("tipflowfilters.com/qualcosa")).toBe("https://tipflowfilters.com");
+    expect(publicOrigin("Tipflowfilters.com.")).toBe("https://tipflowfilters.com");
+    expect(publicOrigin("")).toBeNull();
+    expect(publicOrigin(undefined)).toBeNull();
+    expect(publicOrigin("ciao")).toBeNull();
   });
 });
