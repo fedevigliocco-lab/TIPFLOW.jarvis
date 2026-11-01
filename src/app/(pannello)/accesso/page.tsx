@@ -18,7 +18,7 @@ export default async function Accesso({ searchParams }: { searchParams: Promise<
       <h1>Accesso</h1>
       <p className="meta">Il pannello di Tipflow è privato.</p>
       {errore && <div className="notice bad">Password sbagliata.</div>}
-      <input type="hidden" name="da" value={da ?? "/"} />
+      <input type="hidden" name="da" value={da ?? "/jarvis"} />
       <input className="field" type="password" name="password" placeholder="Password" autoComplete="current-password" required autoFocus />
       <div className="actions">
         <button className="btn primary">Entra</button>

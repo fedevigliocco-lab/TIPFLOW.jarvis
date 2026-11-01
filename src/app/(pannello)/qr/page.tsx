@@ -161,7 +161,15 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
         </label>
         <label>
           Sito
-          <input className="field" name="sito" defaultValue={settings.sito} placeholder="tipflow.shop" />
+          <input className="field" name="sito" defaultValue={settings.sito} placeholder="tipflowfilters.com" />
+        </label>
+        <label>
+          Prezzo della busta, in euro (anche sul sito)
+          <input className="field" name="prezzo" defaultValue={settings.prezzo} inputMode="decimal" placeholder="20" />
+        </label>
+        <label>
+          Filtri nella busta
+          <input className="field" name="pezzi" defaultValue={settings.pezzi} inputMode="numeric" placeholder="100" />
         </label>
         <div className="actions">
           <button className="btn primary">Salva la pagina</button>

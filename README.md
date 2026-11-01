@@ -8,7 +8,8 @@ Il pannello è protetto da una password (`JARVIS_PASSWORD`). In locale, se non l
 
 | Pagina | Cosa mostra |
 | --- | --- |
-| Jarvis | Saluto, cose da decidere, agenti accesi, spesa di Claude oggi, filtri in magazzino |
+| Sito (`/`, `/en`) | Il sito vetrina pubblico di Tipflow, in italiano e inglese: si ordina su WhatsApp. Numero, prezzo e pezzi si cambiano da Test QR |
+| Jarvis (`/jarvis`) | Saluto, cose da decidere, agenti accesi, spesa di Claude oggi, filtri in magazzino |
 | I tuoi da fare | Le bozze degli agenti, con Approva / Rifiuta e una nota per l'agente |
 | La squadra | Tutti gli agenti per reparto, il loro stato, l'ultimo giro e il pulsante "Fai girare ora" |
 | Magazzino | Filtri in casa, pacchi possibili e incasso massimo per formato |

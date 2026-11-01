@@ -6,8 +6,8 @@ import { checkPassword, sessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 export async function login(formData: FormData) {
   const attempt = String(formData.get("password") ?? "");
-  const next = String(formData.get("da") ?? "/");
-  const target = next.startsWith("/") && !next.startsWith("//") ? next : "/";
+  const next = String(formData.get("da") ?? "/jarvis");
+  const target = next.startsWith("/") && !next.startsWith("//") ? next : "/jarvis";
   if (!(await checkPassword(attempt))) redirect(`/accesso?errore=1&da=${encodeURIComponent(target)}`);
 
   (await cookies()).set(SESSION_COOKIE, await sessionToken(attempt), {

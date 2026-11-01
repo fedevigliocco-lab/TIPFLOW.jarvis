@@ -23,7 +23,7 @@ export default async function PannelloLayout({ children }: { children: React.Rea
   return (
     <div className="shell">
       <header className="top">
-        <Link href="/" aria-label="Jarvis, pagina iniziale">
+        <Link href="/jarvis" aria-label="Jarvis, pagina iniziale">
           <Image src="/logo.png" alt="Tipflow" width={116} height={38} priority />
         </Link>
         {stats && <Nav pending={stats.pending} />}
