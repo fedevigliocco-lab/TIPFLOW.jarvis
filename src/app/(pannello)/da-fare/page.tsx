@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { decide } from "@/app/actions";
+import { decide } from "@/app/(pannello)/actions";
 import { Markdown } from "@/components/Markdown";
 import { getDb } from "@/lib/db";
 import { when } from "@/lib/format";
