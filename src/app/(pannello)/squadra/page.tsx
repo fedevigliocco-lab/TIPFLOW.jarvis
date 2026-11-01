@@ -1,5 +1,5 @@
 import { isRunnable } from "@/agents";
-import { runNow } from "@/app/actions";
+import { runNow } from "@/app/(pannello)/actions";
 import { RunButton } from "@/components/RunButton";
 import { getDb } from "@/lib/db";
 import { when } from "@/lib/format";

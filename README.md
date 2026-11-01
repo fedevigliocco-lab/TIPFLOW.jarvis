@@ -12,6 +12,7 @@ Il pannello è protetto da una password (`JARVIS_PASSWORD`). In locale, se non l
 | I tuoi da fare | Le bozze degli agenti, con Approva / Rifiuta e una nota per l'agente |
 | La squadra | Tutti gli agenti per reparto, il loro stato, l'ultimo giro e il pulsante "Fai girare ora" |
 | Magazzino | Filtri in casa, pacchi possibili e incasso massimo per formato |
+| Test QR | Scansioni del QR sui pacchi, chi tocca WhatsApp (indice di apprezzamento), i QR da stampare e i testi della pagina pubblica |
 
 Agenti:
 
@@ -20,6 +21,12 @@ Agenti:
 - Assistenza e ordini, Magazzino e acquisti, Contabilità: spenti fino ai primi ordini.
 
 Ogni giro finisce nel registro attività con modello, token usati e costo stimato.
+
+## Il QR sui pacchi
+
+Il QR porta a `/q/<codice>`: conta la scansione e apre la pagina pubblica `/tipflow`, con i pulsanti WhatsApp, Instagram e sito. Testi, numero e link si cambiano da Test QR: il QR stampato resta sempre lo stesso. Le pagine `/q`, `/tipflow` e `/vai` sono pubbliche, tutto il resto chiede la password.
+
+Prima di stampare imposta `JARVIS_PUBLIC_URL` con il dominio di Tipflow: è l'indirizzo che finisce dentro i QR.
 
 ## Provarlo sul computer
 

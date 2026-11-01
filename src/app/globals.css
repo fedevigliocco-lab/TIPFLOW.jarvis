@@ -106,3 +106,16 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 }
 .logout { margin-left: auto; }
 .logout button { background: none; border: none; color: var(--muted); font: inherit; cursor: pointer; padding: 0; }
+
+/* Pagina pubblica del QR: pensata per il telefono. */
+.public { max-width: 440px; margin: 0 auto; padding: 48px 16px 40px; text-align: center; min-height: 100vh; display: flex; flex-direction: column; }
+.public-logo { width: 220px; height: auto; margin: 0 auto 32px; }
+.public h1 { font-size: 30px; margin-bottom: 12px; }
+.public-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.public-buttons .btn { display: block; text-decoration: none; padding: 15px 16px; font-size: 17px; }
+.public-foot { margin-top: auto; padding-top: 40px; }
+
+.qr-img { width: 132px; height: 132px; background: #fff; border-radius: 8px; padding: 6px; display: block; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 16px; }
+.form-grid label { display: block; margin-top: 12px; font-size: 13px; color: var(--muted); }
+.form-grid label .field, .form-grid label textarea { margin-top: 4px; }

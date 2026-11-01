@@ -11,6 +11,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Fuori: la pagina di accesso, le chiamate programmate (protette da CRON_SECRET) e i file statici.
-  matcher: ["/((?!accesso|api/agenti|_next/static|_next/image|favicon.ico|logo.png).*)"],
+  // Fuori: la pagina di accesso, le chiamate programmate (protette da CRON_SECRET), il QR con la sua pagina pubblica e i file statici.
+  matcher: ["/((?!accesso|api/agenti|q/|vai/|tipflow|_next/static|_next/image|favicon.ico|logo.png).*)"],
 };

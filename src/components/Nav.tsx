@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/da-fare", label: "I tuoi da fare" },
   { href: "/squadra", label: "La squadra" },
   { href: "/magazzino", label: "Magazzino" },
+  { href: "/qr", label: "Test QR" },
 ];
 
 export function Nav({ pending }: { pending: number }) {

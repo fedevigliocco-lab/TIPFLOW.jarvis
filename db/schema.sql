@@ -60,3 +60,26 @@ create table if not exists inventory (
   location text not null,
   updated_at timestamptz not null default now()
 );
+
+-- Pagina pubblica (quella del QR): testi e link che fede cambia da Jarvis senza ristampare niente.
+create table if not exists settings (
+  key text primary key,
+  value text not null default ''
+);
+
+-- I QR stampati sui pacchi: uno per lotto, così si vede quale gira di più.
+create table if not exists qr_codes (
+  code text primary key,
+  label text not null,
+  created_at timestamptz not null default now()
+);
+
+-- Ogni scansione e ogni tocco sui pulsanti della pagina. "visitor" è un'impronta anonima, non un dato personale leggibile.
+create table if not exists visits (
+  id bigserial primary key,
+  code text references qr_codes(code),
+  kind text not null check (kind in ('scansione', 'whatsapp', 'instagram', 'sito')),
+  visitor text not null,
+  created_at timestamptz not null default now()
+);
+create index if not exists visits_created_idx on visits (created_at);

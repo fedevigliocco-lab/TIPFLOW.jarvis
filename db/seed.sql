@@ -25,3 +25,16 @@ on conflict (sku) do nothing;
 insert into inventory (item, description, quantity, unit_cost_usd, location) values
   ('filtro', 'Filtro a carbone attivo con beccuccio integrato, logo Tipflow stampato', 8500, 0.0590, 'Milano, casa di fede')
 on conflict (item) do nothing;
+
+insert into settings (key, value) values
+  ('titolo', 'Ti è piaciuto il filtro?'),
+  ('testo', 'Carbone attivo e beccuccio integrato: fumo più pulito e più fresco. Scrivici su WhatsApp per averne altri.'),
+  ('whatsapp', ''),
+  ('messaggio_whatsapp', 'Ciao! Ho provato i filtri Tipflow e vorrei ordinarne altri.'),
+  ('instagram', ''),
+  ('sito', '')
+on conflict (key) do nothing;
+
+insert into qr_codes (code, label) values
+  ('p1', 'Primi pacchi (giro dell''amico)')
+on conflict (code) do nothing;
