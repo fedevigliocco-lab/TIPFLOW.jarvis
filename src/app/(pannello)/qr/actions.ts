@@ -14,6 +14,8 @@ export async function savePage(formData: FormData) {
   await saveSettings(await getDb(), values);
   revalidatePath("/qr");
   revalidatePath("/tipflow");
+  revalidatePath("/");
+  revalidatePath("/en");
   redirect("/qr?salvato=1");
 }
 

@@ -1,8 +1,9 @@
 import type { Db } from "./db";
 
 // Il test di mercato: QR sui pacchi → pagina pubblica → WhatsApp, Instagram o sito.
+// Le stesse impostazioni (numero, prezzo) servono anche al sito vetrina.
 
-export const SETTING_KEYS = ["titolo", "testo", "whatsapp", "messaggio_whatsapp", "instagram", "sito"] as const;
+export const SETTING_KEYS = ["titolo", "testo", "whatsapp", "messaggio_whatsapp", "instagram", "sito", "prezzo", "pezzi"] as const;
 export type SettingKey = (typeof SETTING_KEYS)[number];
 export type Settings = Record<SettingKey, string>;
 

@@ -32,7 +32,9 @@ insert into settings (key, value) values
   ('whatsapp', ''),
   ('messaggio_whatsapp', 'Ciao! Ho provato i filtri Tipflow e vorrei ordinarne altri.'),
   ('instagram', ''),
-  ('sito', '')
+  ('sito', ''),
+  ('prezzo', '20'),
+  ('pezzi', '100')
 on conflict (key) do nothing;
 
 insert into qr_codes (code, label) values
