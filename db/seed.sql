@@ -62,3 +62,8 @@ where key = 'spedizione' and value = '';
 update settings set value = 'PayPal: dopo l''ordine di'' al cliente che a breve gli mandi il link PayPal per pagare il totale (se qui sotto c''è un link paypal.me, mandalo tu con l''importo). La merce parte dopo il pagamento.
 Consegna a mano a Milano: si può pagare anche in contanti alla consegna.'
 where key = 'pagamento' and value = '';
+
+-- fede non vuole PayPal: carta (link Stripe) come strada principale, Satispay in alternativa, contanti a Milano.
+update settings set value = 'Il cliente può pagare con carta, anche Apple Pay o Google Pay: dopo l''ordine di'' che a breve gli mandi il link di pagamento sicuro. In alternativa Satispay. Non nominare PayPal.
+Consegna a mano a Milano: si può pagare anche in contanti alla consegna. La merce parte dopo il pagamento.'
+where key = 'pagamento' and value like 'PayPal:%';
