@@ -40,3 +40,14 @@ on conflict (key) do nothing;
 insert into qr_codes (code, label) values
   ('p1', 'Primi pacchi (giro dell''amico)')
 on conflict (code) do nothing;
+
+-- Novembre 2026: l'agente Assistenza risponde da solo ai clienti su WhatsApp.
+update agents set status = 'acceso', schedule = 'a ogni messaggio',
+  description = 'Risponde da solo ai clienti su WhatsApp, a qualsiasi messaggio: domande, ordini, problemi. Prende gli ordini, scala il magazzino e ti chiama solo quando serve davvero.'
+where id = 'assistenza-ordini' and schedule is distinct from 'a ogni messaggio';
+
+insert into settings (key, value) values
+  ('spedizione', ''),
+  ('pagamento', ''),
+  ('istruzioni_assistenza', '')
+on conflict (key) do nothing;

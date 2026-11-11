@@ -11,6 +11,7 @@ Il pannello è protetto da una password (`JARVIS_PASSWORD`). In locale, se non l
 | Sito (`/`, `/en`) | Il sito vetrina pubblico di Tipflow, in italiano e inglese: si ordina su WhatsApp. Numero, prezzo e pezzi si cambiano da Test QR |
 | Jarvis (`/jarvis`) | Saluto, cose da decidere, agenti accesi, spesa di Claude oggi, filtri in magazzino |
 | I tuoi da fare | Le bozze degli agenti, con Approva / Rifiuta e una nota per l'agente |
+| Clienti | Le chat WhatsApp con i clienti, gli ordini, la chat di prova dell'agente e cosa sa (spedizione, pagamento) |
 | La squadra | Tutti gli agenti per reparto, il loro stato, l'ultimo giro e il pulsante "Fai girare ora" |
 | Magazzino | Filtri in casa, pacchi possibili e incasso massimo per formato |
 | Test QR | Scansioni del QR sui pacchi, chi tocca WhatsApp (indice di apprezzamento), i QR da stampare e i testi della pagina pubblica |
@@ -19,7 +20,8 @@ Agenti:
 
 - **Negozio** (acceso): scrive la scheda prodotto per Shopify, i testi, la SEO e una proposta di prezzi e pacchi. Se rifiuti una bozza, al giro dopo legge la tua nota.
 - Contenuti, Vendite ai negozi, Direttore: in costruzione.
-- Assistenza e ordini, Magazzino e acquisti, Contabilità: spenti fino ai primi ordini.
+- **Assistenza e ordini** (acceso): risponde da solo ai clienti su WhatsApp, a qualsiasi messaggio. Prende gli ordini (solo maggiorenni), scala il magazzino e ti mette l'ordine da spedire in I tuoi da fare. Ti chiama per reclami, rimborsi, sconti, rivenditori e quando non sa una cosa; se il cliente vuole una persona ti passa la chat e tace.
+- Magazzino e acquisti, Contabilità: spenti fino ai primi ordini.
 
 Ogni giro finisce nel registro attività con modello, token usati e costo stimato.
 
@@ -28,6 +30,19 @@ Ogni giro finisce nel registro attività con modello, token usati e costo stimat
 Il QR porta a `/q/<codice>`: conta la scansione e apre la pagina pubblica `/tipflow`, con i pulsanti WhatsApp, Instagram e sito. Testi, numero e link si cambiano da Test QR: il QR stampato resta sempre lo stesso. Le pagine `/q`, `/tipflow` e `/vai` sono pubbliche, tutto il resto chiede la password.
 
 Prima di stampare imposta `JARVIS_PUBLIC_URL` con il dominio di Tipflow: è l'indirizzo che finisce dentro i QR.
+
+## Collegare WhatsApp
+
+L'agente si prova subito da Clienti > Prova l'agente. Per farlo rispondere ai clienti veri serve l'API Cloud di WhatsApp (Meta):
+
+1. Su [developers.facebook.com](https://developers.facebook.com) crea un'app di tipo Business e aggiungi il prodotto WhatsApp. Ti chiede un account Meta Business.
+2. In WhatsApp > Configurazione API aggiungi il numero di Tipflow e verificalo con il codice via SMS. Il numero non deve essere attivo sull'app WhatsApp normale (o va collegato con la "coesistenza" di WhatsApp Business).
+3. Crea un utente di sistema in Meta Business con un token permanente (permessi `whatsapp_business_messaging` e `whatsapp_business_management`).
+4. Su Vercel imposta: `WHATSAPP_TOKEN` (il token), `WHATSAPP_PHONE_NUMBER_ID` (l'id del numero, lo trovi in Configurazione API), `WHATSAPP_APP_SECRET` (Impostazioni app > Di base > Chiave segreta), `WHATSAPP_VERIFY_TOKEN` (una parola a piacere), `WHATSAPP_TITOLARE` (il tuo numero personale, per gli avvisi). Rifai il deploy.
+5. In WhatsApp > Configurazione, webhook: URL `https://tipflowfilters.com/api/whatsapp`, token di verifica = la parola di `WHATSAPP_VERIFY_TOKEN`. Iscriviti al campo `messages`.
+6. Metti il numero anche in Test QR, così compare sul sito e sulla pagina del QR.
+
+Gli avvisi sul tuo numero arrivano solo se hai scritto al numero di Tipflow nelle ultime 24 ore (regola di WhatsApp): per questo ogni avviso è anche in I tuoi da fare.
 
 ## Provarlo sul computer
 
