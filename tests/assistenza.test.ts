@@ -190,3 +190,11 @@ describe("webhook WhatsApp", () => {
     expect(await addMessage(db, { phone: PHONE, author: "cliente", text: "ciao", waId: "wamid.1" })).toBeNull();
   });
 });
+
+describe("tono da persona", () => {
+  it("il cliente non vede mai le etichette interne", async () => {
+    const { cleanReply } = await import("@/agents/assistenza");
+    expect(cleanReply("[Messaggio scritto da fede di persona] Arriva domani!")).toBe("Arriva domani!");
+    expect(cleanReply("Ciao [nome]!")).toBe("Ciao [nome]!");
+  });
+});
