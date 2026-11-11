@@ -62,3 +62,8 @@ where key = 'spedizione' and value = '';
 update settings set value = 'PayPal: dopo l''ordine di'' al cliente che a breve gli mandi il link PayPal per pagare il totale (se qui sotto c''è un link paypal.me, mandalo tu con l''importo). La merce parte dopo il pagamento.
 Consegna a mano a Milano: si può pagare anche in contanti alla consegna.'
 where key = 'pagamento' and value = '';
+
+-- fede non vuole PayPal: finché sceglie come farsi pagare, l'agente non nomina nessun metodo online.
+update settings set value = 'Dopo l''ordine di'' al cliente che a breve gli mandi i dati per pagare. Non nominare PayPal. La merce parte dopo il pagamento.
+Consegna a mano a Milano: si paga in contanti alla consegna.'
+where key = 'pagamento' and value like 'PayPal:%';
