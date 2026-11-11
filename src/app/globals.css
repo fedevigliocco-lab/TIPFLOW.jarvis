@@ -177,3 +177,12 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .s-specs b { font-size: 17px; }
   .s-price .s-btn { width: 100%; text-align: center; }
 }
+
+/* Clienti: le chat */
+.chat { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; max-height: 520px; overflow-y: auto; }
+.bubble { max-width: 80%; padding: 8px 12px; border-radius: 12px; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--panel-2); border: 1px solid var(--line); }
+.bubble.cliente { align-self: flex-start; }
+.bubble.agente, .bubble.fede { align-self: flex-end; }
+.bubble.fede { border-color: var(--accent); }
+.bubble-who { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
+.conv { text-decoration: none; color: inherit; display: block; }

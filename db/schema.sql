@@ -83,3 +83,40 @@ create table if not exists visits (
   created_at timestamptz not null default now()
 );
 create index if not exists visits_created_idx on visits (created_at);
+
+-- Servizio clienti su WhatsApp: una conversazione per numero di telefono.
+-- "in_mano_a_fede" = l'agente tace e risponde fede; "serve_fede" = l'agente ha chiesto aiuto.
+create table if not exists conversations (
+  phone text primary key,
+  name text,
+  in_mano_a_fede boolean not null default false,
+  serve_fede boolean not null default false,
+  created_at timestamptz not null default now(),
+  last_message_at timestamptz not null default now()
+);
+
+-- Ogni messaggio, in entrata (cliente) e in uscita (agente o fede). wa_id evita di rispondere due volte allo stesso messaggio.
+create table if not exists chat_messages (
+  id bigserial primary key,
+  phone text not null references conversations(phone),
+  author text not null check (author in ('cliente', 'agente', 'fede')),
+  text text not null,
+  wa_id text unique,
+  created_at timestamptz not null default now()
+);
+create index if not exists chat_messages_phone_idx on chat_messages (phone, id);
+
+-- Ordini presi su WhatsApp. "prova" = nati dalla chat di prova: non toccano il magazzino.
+create table if not exists orders (
+  id bigserial primary key,
+  phone text not null references conversations(phone),
+  name text not null,
+  address text not null,
+  bags integer not null check (bags > 0),
+  pieces integer not null check (pieces > 0),
+  total_cents integer not null check (total_cents >= 0),
+  notes text,
+  status text not null default 'da spedire' check (status in ('da spedire', 'spedito', 'annullato')),
+  prova boolean not null default false,
+  created_at timestamptz not null default now()
+);

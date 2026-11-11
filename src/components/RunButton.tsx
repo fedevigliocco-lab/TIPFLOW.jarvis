@@ -2,15 +2,15 @@
 
 import { useFormStatus } from "react-dom";
 
-// Il giro di un agente dura un paio di minuti: il pulsante lo dice, così non si preme due volte.
-export function RunButton() {
+// Il giro di un agente dura un po': il pulsante lo dice, così non si preme due volte.
+export function RunButton({ label = "Fai girare ora", hint = "Ci vogliono 1 o 2 minuti. Non chiudere la pagina." }: { label?: string; hint?: string }) {
   const { pending } = useFormStatus();
   return (
     <>
       <button className="btn primary" disabled={pending}>
-        {pending ? "Sto lavorando…" : "Fai girare ora"}
+        {pending ? "Sto lavorando…" : label}
       </button>
-      {pending && <span className="working">Ci vogliono 1 o 2 minuti. Non chiudere la pagina.</span>}
+      {pending && <span className="working">{hint}</span>}
     </>
   );
 }
