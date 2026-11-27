@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { dollars, greeting, number, plural, when } from "@/lib/format";
+import { provaStats } from "@/lib/prova";
 import { listAgents, listStock, listTasks, todayStats } from "@/lib/repo";
 
 export default async function Home() {
   const db = await getDb();
-  const [stats, tasks, agents, stock] = await Promise.all([todayStats(db), listTasks(db), listAgents(db), listStock(db)]);
+  const [stats, tasks, agents, stock, prova] = await Promise.all([todayStats(db), listTasks(db), listAgents(db), listStock(db), provaStats(db)]);
   const filters = stock.find((s) => s.item === "filtro")?.quantity ?? 0;
   const working = agents.filter((a) => a.status === "acceso").length;
 
@@ -40,6 +41,11 @@ export default async function Home() {
           <div className="label">Filtri in magazzino</div>
           <div className="value">{number(filters)}</div>
           <div className="hint">Milano</div>
+        </Link>
+        <Link href="/campioni" className="tile" style={{ textDecoration: "none" }}>
+          <div className="label">Prenotati per il lancio</div>
+          <div className="value">{number(prova.booked)}</div>
+          <div className="hint">{plural(prova.people, "persona ha", "persone hanno")} scansionato il QR</div>
         </Link>
       </div>
 

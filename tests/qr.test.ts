@@ -33,7 +33,7 @@ describe("test di mercato con QR", () => {
     await recordVisit(db, { code: "p1", kind: "whatsapp", visitor: "anna" });
     await recordVisit(db, { code: "p1", kind: "whatsapp", visitor: "anna" });
 
-    const [p1] = await qrStats(db);
+    const p1 = (await qrStats(db)).find((q) => q.code === "p1");
     expect(p1).toMatchObject({ code: "p1", scans: 3, people: 2, whatsapp: 1, instagram: 0, sito: 0 });
     expect(await totalStats(db)).toMatchObject({ scans: 3, people: 2, whatsapp: 1 });
     expect((await dailyStats(db))[0]).toMatchObject({ scans: 3, people: 2, whatsapp: 1 });
@@ -49,7 +49,7 @@ describe("test di mercato con QR", () => {
     expect(await createQrCode(db, "p2", "Negozio di Marco")).toBe(true);
     expect(await createQrCode(db, "p2", "Doppione")).toBe(false);
     expect(await createQrCode(db, "Con Spazi", "No")).toBe(false);
-    expect((await qrStats(db)).map((q) => q.code)).toEqual(["p1", "p2"]);
+    expect((await qrStats(db)).map((q) => q.code)).toEqual(["amico", "p1", "p2"]);
   });
 
   it("la pagina si cambia da Jarvis e i pulsanti seguono", async () => {

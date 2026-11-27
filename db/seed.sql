@@ -41,6 +41,11 @@ insert into qr_codes (code, label) values
   ('p1', 'Primi pacchi (giro dell''amico)')
 on conflict (code) do nothing;
 
+-- Il link che gira con "Passalo a un amico": chi arriva da qui non ha ancora provato il filtro.
+insert into qr_codes (code, label) values
+  ('amico', 'Passaparola (link mandato da un amico)')
+on conflict (code) do nothing;
+
 -- Novembre 2026: l'agente Assistenza risponde da solo ai clienti su WhatsApp.
 update agents set status = 'acceso', schedule = 'a ogni messaggio',
   description = 'Risponde da solo ai clienti su WhatsApp, a qualsiasi messaggio: domande, ordini, problemi. Prende gli ordini, scala il magazzino e ti chiama solo quando serve davvero.'

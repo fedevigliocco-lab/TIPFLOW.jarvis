@@ -186,3 +186,78 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .bubble.fede { border-color: var(--accent); }
 .bubble-who { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
 .conv { text-decoration: none; color: inherit; display: block; }
+
+/* Pagina del QR sui campioni: voto, prenota il lancio, passaparola. Prima il telefono. */
+.p { position: relative; max-width: 480px; margin: 0 auto; padding: 0 16px 40px; color: #ecebe6; overflow: hidden; }
+.p-bg { position: absolute; inset: 40px -60px auto; height: 420px; background: url("/prova/graffiti.png") center / contain no-repeat;
+  opacity: .07; transform: rotate(-8deg); pointer-events: none; }
+.p > :not(.p-bg):not(.p-gate) { position: relative; }
+.p-top { display: flex; justify-content: space-between; align-items: center; padding: 18px 0 8px; }
+.p-top img { height: 36px; width: auto; }
+.p-lang { font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--muted); background: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.p-hero { padding: 36px 0 28px; }
+.p-kicker { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; margin: 0 0 14px; }
+.p-hero h1 { font-size: clamp(42px, 13vw, 60px); line-height: .98; letter-spacing: -0.035em; font-weight: 900; margin: 0; }
+.p-hero h1 span { color: var(--accent); text-shadow: 0 0 28px rgba(200, 255, 60, .35); }
+.p-filter { display: block; width: 92%; height: auto; margin: 30px 0 22px -2%; transform: rotate(-6deg);
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .6)); }
+.p-lead { color: #b9b8b2; font-size: 17px; margin: 0; }
+.p-card { background: rgba(22, 22, 26, .92); border: 1px solid var(--line); border-radius: 18px; padding: 22px 18px; margin-top: 14px; }
+.p-card h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; }
+.p-hint { color: #b9b8b2; margin: 0 0 16px; }
+.p-vote { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.p-vote button { aspect-ratio: 1; border-radius: 14px; border: 1px solid var(--line); background: var(--panel-2); cursor: pointer;
+  font-size: 30px; line-height: 1; padding: 0; transition: transform .12s, opacity .12s, border-color .12s; }
+.p-vote button:active { transform: scale(.92); }
+.p-vote button.on { border-color: var(--accent); background: #232a12; transform: scale(1.06); }
+.p-vote button.off { opacity: .45; }
+.p-vote-label { text-align: center; color: var(--accent); font-weight: 700; margin: 10px 0 0; min-height: 1.5em; }
+.p-comment p { margin: 14px 0 0; font-weight: 600; }
+.p-comment textarea, .p-book input:not([type="checkbox"]) {
+  width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 12px; padding: 12px; margin-top: 8px; }
+.p-comment textarea:focus, .p-book input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+.p-comment .p-btn { margin-top: 10px; }
+.p-ok { color: var(--ok); font-weight: 600; margin: 14px 0 0; }
+.p-btn { display: inline-block; font: inherit; font-weight: 800; font-size: 16px; text-align: center; text-decoration: none; cursor: pointer;
+  border-radius: 12px; padding: 14px 18px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); }
+.p-btn:disabled { opacity: .5; cursor: default; }
+.p-primary { width: 100%; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); margin-top: 16px; }
+.p-pack { display: inline-block; font-weight: 700; font-size: 14px; border: 1px dashed var(--accent); color: var(--accent);
+  border-radius: 999px; padding: 4px 12px; margin: 0 0 6px; }
+.p-book label { display: block; margin-top: 14px; font-size: 14px; color: #b9b8b2; }
+.p-book fieldset { border: 0; padding: 0; margin: 14px 0 0; }
+.p-book legend { font-size: 14px; color: #b9b8b2; padding: 0; }
+.p-bags { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 8px; }
+.p-bags button { font: inherit; font-weight: 800; font-size: 17px; padding: 11px 0; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.p-bags button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.p-book .p-check { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; }
+.p-check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--accent); flex: none; }
+.p-err { color: var(--bad); margin: 12px 0 0; }
+.p-done { text-align: center; padding: 10px 0; }
+.p-done p { color: #b9b8b2; margin: 6px 0 0; }
+.p-done .p-tag { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
+  color: var(--accent-ink); font-size: 26px; font-weight: 900; margin: 0 0 12px; }
+.p-share { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.p-wa { background: #25d366; border-color: #25d366; color: #062b14; }
+.p-foot { color: var(--muted); font-size: 13px; padding-top: 28px; }
+.p-foot p { margin: 0 0 8px; }
+.p-foot a { color: var(--text); }
+.p-adults { color: var(--text); font-weight: 600; }
+.p-gate { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 24px 16px; text-align: center;
+  background: radial-gradient(ellipse at 50% 30%, #1a1d10 0%, var(--bg) 70%); }
+.p-gate > div { max-width: 340px; width: 100%; }
+.p-gate img { width: 180px; height: auto; margin-bottom: 28px; }
+.p-gate h2 { font-size: 26px; font-weight: 900; margin: 0 0 8px; }
+.p-gate p { color: #b9b8b2; margin: 0 0 18px; }
+.p-ghost { width: 100%; margin-top: 10px; background: transparent; }
+.p-gate-lang { margin-top: 26px; }
+
+/* Campioni: barre dei voti */
+.bar-row { display: grid; grid-template-columns: 32px 1fr 40px; gap: 10px; align-items: center; padding: 4px 0; }
+.bar-emoji { font-size: 20px; }
+.bar { height: 12px; background: var(--panel-2); border-radius: 999px; overflow: hidden; }
+.bar > div { height: 100%; background: var(--accent); border-radius: 999px; }
+.bar-n { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
