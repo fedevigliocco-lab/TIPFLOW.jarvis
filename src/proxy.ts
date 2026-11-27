@@ -1,11 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isValidSession, SESSION_COOKIE } from "@/lib/auth";
 
-// Pagine aperte a tutti: il sito (italiano e inglese), il QR con la sua pagina, l'accesso
+// Pagine aperte a tutti: il sito (italiano e inglese), il QR con la sua pagina (e il suo invio di voti e prenotazioni), l'accesso
 // le chiamate programmate (protette da CRON_SECRET) e il webhook di WhatsApp (firmato da Meta). Tutto il resto è il pannello.
 function isPublic(pathname: string): boolean {
   if (pathname === "/" || pathname === "/en") return true;
-  return ["/accesso", "/api/agenti/", "/api/whatsapp", "/q/", "/vai/", "/tipflow", "/sito/"].some((p) => pathname.startsWith(p));
+  return ["/accesso", "/api/agenti/", "/api/whatsapp", "/api/prova", "/q/", "/vai/", "/tipflow", "/sito/", "/prova/"].some((p) => pathname.startsWith(p));
 }
 
 // Ogni pagina del pannello (e ogni pulsante) richiede l'accesso.

@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import QRCode from "qrcode";
 import { getDb } from "@/lib/db";
 import { number } from "@/lib/format";
+import { provaStats } from "@/lib/prova";
 import { dailyStats, getSettings, linkTarget, publicOrigin, qrStats, totalStats } from "@/lib/qr";
 import { addQr, savePage } from "./actions";
 
@@ -20,7 +21,7 @@ const percent = (part: number, whole: number) => (whole === 0 ? "–" : `${Math.
 export default async function TestQr({ searchParams }: { searchParams: Promise<{ salvato?: string; errore?: string }> }) {
   const { salvato, errore } = await searchParams;
   const db = await getDb();
-  const [settings, codes, totals, days] = await Promise.all([getSettings(db), qrStats(db), totalStats(db), dailyStats(db)]);
+  const [settings, codes, totals, days, prova] = await Promise.all([getSettings(db), qrStats(db), totalStats(db), dailyStats(db), provaStats(db)]);
   const base = await publicBase();
   const provisional = !publicOrigin(process.env.JARVIS_PUBLIC_URL);
   const images = await Promise.all(
@@ -57,11 +58,11 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
           <div className="value">{number(totals.whatsapp)}</div>
           <div className="hint">persone che hanno toccato WhatsApp</div>
         </div>
-        <div className="tile">
+        <a href="/campioni" className="tile" style={{ textDecoration: "none" }}>
           <div className="label">Indice di apprezzamento</div>
-          <div className="value">{percent(totals.whatsapp, totals.people)}</div>
-          <div className="hint">di chi scansiona, quanti vogliono ordinare</div>
-        </div>
+          <div className="value">{percent(prova.booked, prova.people)}</div>
+          <div className="hint">di chi scansiona, quanti prenotano il lancio (vedi Campioni)</div>
+        </a>
       </div>
 
       <h2>I tuoi QR</h2>
@@ -135,21 +136,14 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
 
       <h2>La pagina dove porta il QR</h2>
       <p className="meta">
-        Cambiala quando vuoi: il QR stampato resta lo stesso. I pulsanti senza link non compaiono.{" "}
-        <a href="/tipflow" target="_blank">Apri la pagina</a>
+        Chi scansiona trova voto, &quot;Prenota il lancio&quot; e &quot;Passalo a un amico&quot; (risultati in Campioni). Qui cambi
+        contatti e prezzo: il QR stampato resta lo stesso. WhatsApp e Instagram compaiono solo se li compili.{" "}
+        <a href="/tipflow?da=p1" target="_blank">Apri la pagina</a>
       </p>
       <form action={savePage} className="card form-grid">
         <label>
-          Titolo
-          <input className="field" name="titolo" defaultValue={settings.titolo} required />
-        </label>
-        <label>
           Numero WhatsApp
           <input className="field" name="whatsapp" defaultValue={settings.whatsapp} placeholder="+39 333 1234567" inputMode="tel" />
-        </label>
-        <label>
-          Testo
-          <textarea name="testo" defaultValue={settings.testo} />
         </label>
         <label>
           Messaggio già scritto su WhatsApp
@@ -173,7 +167,7 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
         </label>
         <div className="actions">
           <button className="btn primary">Salva la pagina</button>
-          {!linkTarget("whatsapp", settings) && <span className="working">Manca il numero WhatsApp: senza, la pagina non ha il pulsante per ordinare.</span>}
+          {!linkTarget("whatsapp", settings) && <span className="working">Manca il numero WhatsApp: sul sito e sulla pagina del QR non c&apos;è ancora il contatto.</span>}
         </div>
       </form>
     </>

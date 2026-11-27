@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/clienti", label: "Clienti" },
   { href: "/squadra", label: "La squadra" },
   { href: "/magazzino", label: "Magazzino" },
+  { href: "/campioni", label: "Campioni" },
   { href: "/qr", label: "Test QR" },
 ];
 

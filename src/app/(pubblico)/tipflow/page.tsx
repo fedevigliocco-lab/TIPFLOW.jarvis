@@ -1,42 +1,45 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { headers } from "next/headers";
+import { Prova } from "@/components/Prova";
 import { getDb } from "@/lib/db";
-import { getSettings, linkTarget, type LinkKind } from "@/lib/qr";
+import { getSettings, isValidCode, linkTarget, publicOrigin } from "@/lib/qr";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Tipflow",
-  description: "Filtri a carbone attivo con beccuccio integrato. Fumo più pulito e più fresco.",
+  title: "Tipflow · L'hai provato. Ora sai.",
+  description: "Filtri a carbone attivo con bocchino integrato. Prenota il lancio.",
+  openGraph: {
+    title: "Tipflow · Better tip. Better flow.",
+    description: "Filtri a carbone attivo con bocchino integrato. Prenota il lancio.",
+    images: ["/sito/filtro.jpg"],
+  },
 };
 
-const BUTTONS: { kind: LinkKind; label: string }[] = [
-  { kind: "whatsapp", label: "Ordina su WhatsApp" },
-  { kind: "instagram", label: "Seguici su Instagram" },
-  { kind: "sito", label: "Vai al sito" },
-];
-
-// La pagina dove porta il QR stampato sui pacchi. Testi e link si cambiano da Jarvis, in "Test QR".
-export default async function Pubblica({ searchParams }: { searchParams: Promise<{ da?: string }> }) {
-  const { da } = await searchParams;
+// Dove porta il QR stampato sui campioni (e il link che gira con "Passalo a un amico").
+// Voto, lista d'attesa e passaparola: tutto finisce in Jarvis > Campioni.
+export default async function Pubblica({ searchParams }: { searchParams: Promise<{ da?: string; lang?: string }> }) {
+  const { da, lang } = await searchParams;
   const settings = await getSettings(await getDb());
-  const buttons = BUTTONS.filter((b) => linkTarget(b.kind, settings));
-  const from = da && /^[a-z0-9-]{1,20}$/.test(da) ? `?da=${da}` : "";
+  const h = await headers();
+  const code = da && isValidCode(da) ? da : null;
+
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const origin = publicOrigin(process.env.JARVIS_PUBLIC_URL) ?? `${proto}://${host}`;
+
+  const english = lang === "en" || (lang !== "it" && !/^it\b/i.test(h.get("accept-language") ?? "it"));
 
   return (
-    <div className="public">
-      <Image src="/logo.png" alt="Tipflow" width={220} height={72} priority className="public-logo" />
-      <h1>{settings.titolo}</h1>
-      {settings.testo && <p className="lead">{settings.testo}</p>}
-      <div className="public-buttons">
-        {buttons.map((b, i) => (
-          <a key={b.kind} href={`/vai/${b.kind}${from}`} className={`btn ${i === 0 ? "primary" : ""}`}>
-            {b.label}
-          </a>
-        ))}
-        {buttons.length === 0 && <p className="meta">Presto qui trovi come ordinare.</p>}
-      </div>
-      <p className="meta public-foot">Prodotto riservato ai maggiorenni.</p>
-    </div>
+    <Prova
+      code={code}
+      initialLang={english ? "en" : "it"}
+      fromFriend={code === "amico"}
+      shareUrl={`${origin}/q/amico`}
+      hasWhatsapp={Boolean(linkTarget("whatsapp", settings))}
+      hasInstagram={Boolean(linkTarget("instagram", settings))}
+      price={Number(settings.prezzo.replace(",", ".")) || 20}
+      pieces={Number(settings.pezzi) || 100}
+    />
   );
 }

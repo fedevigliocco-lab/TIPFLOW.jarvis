@@ -120,3 +120,38 @@ create table if not exists orders (
   prova boolean not null default false,
   created_at timestamptz not null default now()
 );
+
+-- Pagina del QR sui campioni: il voto di chi ha provato il filtro (uno per persona, si può cambiare).
+create table if not exists feedback (
+  id bigserial primary key,
+  visitor text not null unique,
+  code text,
+  rating integer not null check (rating between 1 and 5),
+  comment text,
+  lang text not null default 'it',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Lista d'attesa "Prenota il lancio": un preordine senza pagamento. Un contatto = una prenotazione.
+create table if not exists waitlist (
+  id bigserial primary key,
+  contact text not null unique,
+  contact_kind text not null check (contact_kind in ('whatsapp', 'email')),
+  name text not null,
+  bags integer not null check (bags between 1 and 50),
+  code text,
+  visitor text,
+  lang text not null default 'it',
+  created_at timestamptz not null default now()
+);
+create index if not exists waitlist_created_idx on waitlist (created_at desc);
+
+-- "Passalo a un amico": ogni volta che qualcuno condivide la pagina.
+create table if not exists shares (
+  id bigserial primary key,
+  visitor text not null,
+  code text,
+  channel text not null,
+  created_at timestamptz not null default now()
+);
