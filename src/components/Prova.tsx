@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { formatPrice, type Currency } from "@/lib/valuta";
+import { PrenotaForm } from "./PrenotaForm";
 
 type Lang = "it" | "en";
 
@@ -35,17 +36,6 @@ const T = {
     bookTitle: "Prenota il lancio",
     bookText: "Tipflow sta per uscire. Prenota adesso: non paghi niente, ti scriviamo noi su WhatsApp appena apriamo.",
     pack: (n: number, p: string) => `Busta da ${n} filtri · ${p}`,
-    name: "Nome",
-    contact: "WhatsApp o email",
-    contactPh: "333 123 4567 o nome@email.it",
-    bags: "Quante buste vorresti?",
-    adult: "Ho almeno 18 anni e potete scrivermi per il lancio.",
-    book: "Prenota il mio posto",
-    booking: "Un attimo…",
-    badContact: "Scrivi un numero WhatsApp o un'email valida.",
-    error: "Qualcosa non è andato. Riprova tra un attimo.",
-    booked: (n: string) => `Sei dentro, ${n}.`,
-    bookedText: "Ti scriviamo per primo appena apriamo. Niente spam, promesso.",
     shareTitle: "Passalo a un amico",
     shareText: "Conosci qualcuno che rolla? Mandagli Tipflow: è un attimo.",
     shareWa: "Mandalo su WhatsApp",
@@ -82,17 +72,6 @@ const T = {
     bookTitle: "Book the launch",
     bookText: "Tipflow is launching soon. Book now: you pay nothing, we'll message you on WhatsApp as soon as we open.",
     pack: (n: number, p: string) => `Pouch of ${n} filters · ${p}`,
-    name: "Name",
-    contact: "WhatsApp or email",
-    contactPh: "+39 333 123 4567 or name@email.com",
-    bags: "How many pouches would you like?",
-    adult: "I'm 18 or over and you can message me about the launch.",
-    book: "Save my spot",
-    booking: "One sec…",
-    badContact: "Enter a valid WhatsApp number or email.",
-    error: "Something went wrong. Try again in a moment.",
-    booked: (n: string) => `You're in, ${n}.`,
-    bookedText: "You'll hear from us first when we open. No spam, promise.",
     shareTitle: "Pass it on",
     shareText: "Know someone who rolls? Send them Tipflow, it takes a second.",
     shareWa: "Send on WhatsApp",
@@ -107,7 +86,6 @@ const T = {
 } as const;
 
 const EMOJI = ["😕", "😐", "🙂", "😃", "🔥"];
-const BAGS = [1, 2, 3, 5, 10];
 const ADULT_KEY = "tipflow18";
 
 export interface ProvaProps {
@@ -137,11 +115,6 @@ export function Prova(props: ProvaProps) {
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState("");
   const [commentSent, setCommentSent] = useState(false);
-  const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
-  const [bags, setBags] = useState(1);
-  const [adult, setAdult] = useState(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "bad" | "error">("idle");
   const [copied, setCopied] = useState(false);
   const [canShare, setCanShare] = useState(false);
   const t = T[lang];
@@ -195,18 +168,6 @@ export function Prova(props: ProvaProps) {
     if (!rating || !comment.trim()) return;
     void send({ type: "voto", code: props.code, lang, rating, comment });
     setCommentSent(true);
-  };
-
-  const book = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    try {
-      const res = await send({ type: "prenota", code: props.code, lang, name, contact, bags, adult });
-      if (res.ok) setStatus("done");
-      else setStatus((await res.json().catch(() => ({}))).error === "contatto" ? "bad" : "error");
-    } catch {
-      setStatus("error");
-    }
   };
 
   const shareMsg = t.shareMsg(props.shareUrl);
@@ -290,56 +251,11 @@ export function Prova(props: ProvaProps) {
       )}
 
       <section className="p-card p-book" id="prenota">
-        {status === "done" ? (
-          <div className="p-done">
-            <p className="p-tag">✓</p>
-            <h2>{t.booked(name.trim().split(" ")[0])}</h2>
-            <p>{t.bookedText}</p>
-          </div>
-        ) : (
-          <>
-            <h2>{t.bookTitle}</h2>
-            <p className="p-hint">{t.bookText}</p>
-            <p className="p-pack">{t.pack(props.pieces, priceText)}</p>
-            <form onSubmit={book}>
-              <label>
-                {t.name}
-                <input value={name} onChange={(e) => setName(e.target.value)} required maxLength={80} autoComplete="given-name" />
-              </label>
-              <label>
-                {t.contact}
-                <input
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  required
-                  maxLength={200}
-                  placeholder={t.contactPh}
-                  autoComplete="off"
-                  autoCapitalize="none"
-                />
-              </label>
-              <fieldset>
-                <legend>{t.bags}</legend>
-                <div className="p-bags">
-                  {BAGS.map((n) => (
-                    <button type="button" key={n} className={bags === n ? "on" : undefined} onClick={() => setBags(n)} aria-pressed={bags === n}>
-                      {n === 10 ? "10+" : n}
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-              <label className="p-check">
-                <input type="checkbox" checked={adult} onChange={(e) => setAdult(e.target.checked)} required />
-                <span>{t.adult}</span>
-              </label>
-              {status === "bad" && <p className="p-err">{t.badContact}</p>}
-              {status === "error" && <p className="p-err">{t.error}</p>}
-              <button className="p-btn p-primary" disabled={status === "sending"}>
-                {status === "sending" ? t.booking : t.book}
-              </button>
-            </form>
-          </>
-        )}
+        <PrenotaForm lang={lang} code={props.code}>
+          <h2>{t.bookTitle}</h2>
+          <p className="p-hint">{t.bookText}</p>
+          <p className="p-pack">{t.pack(props.pieces, priceText)}</p>
+        </PrenotaForm>
       </section>
 
       <section className="p-card">
