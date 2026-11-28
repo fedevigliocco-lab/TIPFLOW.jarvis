@@ -18,9 +18,9 @@ function amount(value: string, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
-// Il prezzo della busta nella valuta giusta. Il prezzo in franchi lo decide fede in Test QR: non è una conversione.
+// Il prezzo della busta nella valuta giusta. Il prezzo in franchi lo decide fede in Test QR (di base CHF 25): non è una conversione.
 export function bagPrice(settings: Pick<Settings, "prezzo" | "prezzo_chf">, currency: Currency): number {
-  return currency === "CHF" ? amount(settings.prezzo_chf, 20) : amount(settings.prezzo, 20);
+  return currency === "CHF" ? amount(settings.prezzo_chf, 25) : amount(settings.prezzo, 20);
 }
 
 // "20,00 €" / "€20.00" in euro, "CHF 20.00" in franchi (come si scrive in Svizzera). decimals: false toglie ",00" sui tondi.
