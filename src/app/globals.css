@@ -202,6 +202,25 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .p-hero h1 span { color: var(--accent); text-shadow: 0 0 28px rgba(200, 255, 60, .35); }
 .p-filter { display: block; width: 92%; height: auto; margin: 30px 0 22px -2%; transform: rotate(-6deg);
   filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .6)); }
+/* Il giro del filtro: quando la pagina si scopre parte un solo giro, con uno sbuffo di vernice lime dietro. */
+.p-spin { position: relative; }
+.p-spin::before { content: ""; position: absolute; left: 0; right: -4%; top: -40%; bottom: -60%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(200, 255, 60, .8), rgba(200, 255, 60, .22) 50%, transparent);
+  filter: blur(16px); opacity: 0; transform: rotate(-6deg) scale(.6); pointer-events: none; }
+.p-spin.go { animation: p-kick 1.9s cubic-bezier(.2, .8, .2, 1) both; }
+.p-spin.go::before { animation: p-spray 2.4s ease-out both; }
+@keyframes p-kick {
+  0% { transform: translateY(0) scale(1); }
+  12% { transform: translateY(-10px) scale(1.05); }
+  70% { transform: translateY(2px) scale(1); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes p-spray {
+  0% { opacity: 0; transform: rotate(-6deg) scale(.5); }
+  18% { opacity: 1; transform: rotate(-6deg) scale(1.1); }
+  100% { opacity: .22; transform: rotate(-6deg) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .p-spin.go, .p-spin.go::before { animation: none; } }
 .p-lead { color: #b9b8b2; font-size: 17px; margin: 0; }
 .p-card { background: rgba(22, 22, 26, .92); border: 1px solid var(--line); border-radius: 18px; padding: 22px 18px; margin-top: 14px; }
 .p-card h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; }
