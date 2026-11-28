@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 
 type Lang = "it" | "en";
 
+const SPIN_SRC = "/prova/filtro-gira.webp";
+
 // La pagina di chi ha scansionato il QR sui campioni. Testi in italiano e inglese, cambio lingua al volo.
 const T = {
   it: {
@@ -146,6 +148,27 @@ export function Prova(props: ProvaProps) {
     document.documentElement.lang = lang;
   }, [lang]);
 
+  // Il filtro fa un solo giro, quando la pagina si scopre (dopo il "18+"): prima carichiamo
+  // l'animazione in silenzio, poi la mettiamo al posto della foto ferma e parte da capo.
+  // Con "riduci movimento" attivo resta la foto ferma.
+  // (Il file arriva come blob: un indirizzo nuovo fa ripartire l'animazione dal primo fotogramma.)
+  const [spinUrl, setSpinUrl] = useState<string | null>(null);
+  const [spin, setSpin] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let url: string | null = null;
+    fetch(SPIN_SRC)
+      .then((r) => (r.ok ? r.blob() : Promise.reject()))
+      .then((b) => setSpinUrl((url = URL.createObjectURL(b))))
+      .catch(() => {});
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, []);
+  useEffect(() => {
+    if (gate === "ok" && spinUrl) setSpin(true);
+  }, [gate, spinUrl]);
+
   const confirmAdult = () => {
     try {
       localStorage.setItem(ADULT_KEY, "1");
@@ -211,12 +234,10 @@ export function Prova(props: ProvaProps) {
           <br />
           <span>{hook[1]}</span>
         </h1>
-        {/* Il filtro gira (WebP animato con trasparenza); chi ha "riduci movimento" vede la foto ferma. */}
-        <picture>
-          <source srcSet="/prova/filtro.png" media="(prefers-reduced-motion: reduce)" />
+        <div className={spin ? "p-spin go" : "p-spin"}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/prova/filtro-gira.webp" alt="" width={880} height={147} className="p-filter" fetchPriority="high" />
-        </picture>
+          <img src={spin && spinUrl ? spinUrl : "/prova/filtro.png"} alt="" width={880} height={147} className="p-filter" fetchPriority="high" />
+        </div>
         <p className="p-lead">{props.fromFriend ? t.friendLead : t.lead}</p>
       </section>
 
