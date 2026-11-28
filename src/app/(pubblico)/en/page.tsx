@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Sito } from "@/components/Sito";
+import { currencyFor } from "@/lib/valuta";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +11,7 @@ export const metadata: Metadata = {
   alternates: { languages: { it: "/" } },
 };
 
-export default function HomeEn() {
-  return <Sito lang="en" />;
+export default async function HomeEn({ searchParams }: { searchParams: Promise<{ paese?: string }> }) {
+  const { paese } = await searchParams;
+  return <Sito lang="en" currency={currencyFor(await headers(), paese)} />;
 }

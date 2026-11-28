@@ -148,7 +148,7 @@ async function describeToday(db: Db): Promise<string> {
   const pieces = Number(s.pezzi) || 100;
   const lines = [
     "Dati di oggi dal gestionale:",
-    `- Busta da ${pieces} filtri: ${euro(priceCents(s.prezzo))}.`,
+    `- Busta da ${pieces} filtri: ${euro(priceCents(s.prezzo))}. Per chi è in Svizzera (numero +41 o lo dice lui): CHF ${(priceCents(s.prezzo_chf) / 100).toFixed(2)}; spedizione in Svizzera da verificare con fede.`,
     `- Buste disponibili subito: ${Math.floor(stock / pieces)}.`,
     `- Spedizione: ${s.spedizione || "costo e tempi non ancora decisi: non dare cifre, di' che verifichi e fai sapere a breve, e chiama fede."}`,
     `- Pagamento: ${s.pagamento || "modo di pagare non ancora deciso: di' che dopo l'ordine gli mandi a breve i dati per pagare."}`,
