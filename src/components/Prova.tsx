@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { formatPrice, type Currency } from "@/lib/valuta";
 
 type Lang = "it" | "en";
 
@@ -29,7 +30,7 @@ const T = {
     commentDone: "Ricevuto. Leggiamo tutto, davvero.",
     bookTitle: "Prenota il lancio",
     bookText: "Tipflow sta per uscire. Prenota adesso: non paghi niente, ti scriviamo noi appena apriamo.",
-    pack: (n: number, p: string) => `Busta da ${n} filtri · ${p} €`,
+    pack: (n: number, p: string) => `Busta da ${n} filtri · ${p}`,
     name: "Nome",
     contact: "WhatsApp o email",
     contactPh: "333 123 4567 o nome@email.it",
@@ -72,7 +73,7 @@ const T = {
     commentDone: "Got it. We read every word.",
     bookTitle: "Book the launch",
     bookText: "Tipflow is launching soon. Book now: you pay nothing, we'll message you as soon as we open.",
-    pack: (n: number, p: string) => `Pouch of ${n} filters · €${p}`,
+    pack: (n: number, p: string) => `Pouch of ${n} filters · ${p}`,
     name: "Name",
     contact: "WhatsApp or email",
     contactPh: "+39 333 123 4567 or name@email.com",
@@ -109,6 +110,7 @@ export interface ProvaProps {
   hasWhatsapp: boolean;
   hasInstagram: boolean;
   price: number;
+  currency: Currency;
   pieces: number;
 }
 
@@ -214,7 +216,7 @@ export function Prova(props: ProvaProps) {
     } catch {}
   };
 
-  const priceText = new Intl.NumberFormat(lang === "it" ? "it-IT" : "en-IE", { maximumFractionDigits: 2 }).format(props.price);
+  const priceText = formatPrice(props.price, props.currency, lang, false);
   const hook = props.fromFriend ? t.friendHook : t.hook;
 
   return (

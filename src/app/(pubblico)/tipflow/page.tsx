@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { Prova } from "@/components/Prova";
 import { getDb } from "@/lib/db";
 import { getSettings, isValidCode, linkTarget, publicOrigin } from "@/lib/qr";
+import { bagPrice, currencyFor } from "@/lib/valuta";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
 
 // Dove porta il QR stampato sui campioni (e il link che gira con "Passalo a un amico").
 // Voto, lista d'attesa e passaparola: tutto finisce in Jarvis > Campioni.
-export default async function Pubblica({ searchParams }: { searchParams: Promise<{ da?: string; lang?: string }> }) {
-  const { da, lang } = await searchParams;
+export default async function Pubblica({ searchParams }: { searchParams: Promise<{ da?: string; lang?: string; paese?: string }> }) {
+  const { da, lang, paese } = await searchParams;
   const settings = await getSettings(await getDb());
   const h = await headers();
   const code = da && isValidCode(da) ? da : null;
@@ -27,6 +28,8 @@ export default async function Pubblica({ searchParams }: { searchParams: Promise
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
   const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const origin = publicOrigin(process.env.JARVIS_PUBLIC_URL) ?? `${proto}://${host}`;
+
+  const currency = currencyFor(h, paese);
 
   const english = lang === "en" || (lang !== "it" && !/^it\b/i.test(h.get("accept-language") ?? "it"));
 
@@ -38,7 +41,8 @@ export default async function Pubblica({ searchParams }: { searchParams: Promise
       shareUrl={`${origin}/q/amico`}
       hasWhatsapp={Boolean(linkTarget("whatsapp", settings))}
       hasInstagram={Boolean(linkTarget("instagram", settings))}
-      price={Number(settings.prezzo.replace(",", ".")) || 20}
+      price={bagPrice(settings, currency)}
+      currency={currency}
       pieces={Number(settings.pezzi) || 100}
     />
   );

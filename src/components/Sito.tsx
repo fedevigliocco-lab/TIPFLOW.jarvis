@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { getSettings, linkTarget } from "@/lib/qr";
+import { bagPrice, formatPrice, type Currency } from "@/lib/valuta";
 
 export type Lang = "it" | "en";
 
@@ -31,8 +32,9 @@ const T = {
     ],
     priceTitle: "Un solo formato",
     pack: (n: string) => `Busta da ${n} filtri`,
-    each: (v: string) => `${v} € a filtro`,
+    each: (v: string) => `${v} a filtro`,
     ship: "Spedizione in tutta Italia: chiedici il costo su WhatsApp.",
+    shipCh: "Sei in Svizzera? Scrivici su WhatsApp per spedizione e tempi.",
     faqTitle: "Domande frequenti",
     faq: [
       ["Come ordino?", "Scrivici su WhatsApp con il pulsante qui sopra: ti rispondiamo noi con il totale e i tempi di consegna."],
@@ -67,8 +69,9 @@ const T = {
     ],
     priceTitle: "One size",
     pack: (n: string) => `Pouch of ${n} filters`,
-    each: (v: string) => `€${v} per filter`,
+    each: (v: string) => `${v} per filter`,
     ship: "Shipping across Italy: ask us for the cost on WhatsApp.",
+    shipCh: "In Switzerland? Message us on WhatsApp for shipping and timing.",
     faqTitle: "FAQ",
     faq: [
       ["How do I order?", "Message us on WhatsApp with the button above: we reply with the total and delivery time."],
@@ -81,15 +84,12 @@ const T = {
   },
 } as const;
 
-const euro = (value: number, lang: Lang) =>
-  new Intl.NumberFormat(lang === "it" ? "it-IT" : "en-IE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
-
-export async function Sito({ lang }: { lang: Lang }) {
+export async function Sito({ lang, currency }: { lang: Lang; currency: Currency }) {
   const t = T[lang];
   const settings = await getSettings(await getDb());
   const hasWhatsapp = Boolean(linkTarget("whatsapp", settings));
   const instagram = linkTarget("instagram", settings);
-  const price = Number(settings.prezzo.replace(",", ".")) || 20;
+  const price = bagPrice(settings, currency);
   const pieces = Number(settings.pezzi) || 100;
 
   const order = hasWhatsapp ? (
@@ -163,9 +163,9 @@ export async function Sito({ lang }: { lang: Lang }) {
         <div className="s-price">
           <div>
             <p className="s-pack">{t.pack(String(pieces))}</p>
-            <p className="s-amount">{lang === "it" ? `${euro(price, lang)} €` : `€${euro(price, lang)}`}</p>
-            <p className="s-each">{t.each(euro(price / pieces, lang))}</p>
-            <p className="s-ship">{t.ship}</p>
+            <p className="s-amount">{formatPrice(price, currency, lang)}</p>
+            <p className="s-each">{t.each(formatPrice(price / pieces, currency, lang))}</p>
+            <p className="s-ship">{currency === "CHF" ? t.shipCh : t.ship}</p>
           </div>
           {order}
         </div>

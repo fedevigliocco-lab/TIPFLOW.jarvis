@@ -162,6 +162,10 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
           <input className="field" name="prezzo" defaultValue={settings.prezzo} inputMode="decimal" placeholder="20" />
         </label>
         <label>
+          Prezzo in franchi, per chi visita dalla Svizzera
+          <input className="field" name="prezzo_chf" defaultValue={settings.prezzo_chf} inputMode="decimal" placeholder="20" />
+        </label>
+        <label>
           Filtri nella busta
           <input className="field" name="pezzi" defaultValue={settings.pezzi} inputMode="numeric" placeholder="100" />
         </label>

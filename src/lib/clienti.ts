@@ -117,7 +117,7 @@ export async function resetProva(db: Db) {
   await db.query("delete from conversations where phone = $1", [PROVA_PHONE]);
 }
 
-export async function getAssistenzaSettings(db: Db): Promise<Record<AssistenzaKey | "prezzo" | "pezzi" | "instagram" | "sito", string>> {
+export async function getAssistenzaSettings(db: Db): Promise<Record<AssistenzaKey | "prezzo" | "prezzo_chf" | "pezzi" | "instagram" | "sito", string>> {
   const rows = await db.query<{ key: string; value: string }>("select key, value from settings");
   const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
   const get = (k: string) => (map[k] ?? "").trim();
@@ -126,6 +126,7 @@ export async function getAssistenzaSettings(db: Db): Promise<Record<AssistenzaKe
     pagamento: get("pagamento"),
     istruzioni_assistenza: get("istruzioni_assistenza"),
     prezzo: get("prezzo") || "20",
+    prezzo_chf: get("prezzo_chf") || "20",
     pezzi: get("pezzi") || "100",
     instagram: get("instagram"),
     sito: get("sito"),
