@@ -28,8 +28,12 @@ const T = {
     commentPh: "Cosa ti è piaciuto, cosa cambieresti… (facoltativo)",
     commentSend: "Invia",
     commentDone: "Ricevuto. Leggiamo tutto, davvero.",
+    moreTitle: "Vuoi saperne di più?",
+    moreSite: "Sito web",
+    moreWa: "WhatsApp · info e dettagli",
+    moreIg: "Instagram",
     bookTitle: "Prenota il lancio",
-    bookText: "Tipflow sta per uscire. Prenota adesso: non paghi niente, ti scriviamo noi appena apriamo.",
+    bookText: "Tipflow sta per uscire. Prenota adesso: non paghi niente, ti scriviamo noi su WhatsApp appena apriamo.",
     pack: (n: number, p: string) => `Busta da ${n} filtri · ${p}`,
     name: "Nome",
     contact: "WhatsApp o email",
@@ -71,8 +75,12 @@ const T = {
     commentPh: "What you liked, what you'd change… (optional)",
     commentSend: "Send",
     commentDone: "Got it. We read every word.",
+    moreTitle: "Want to know more?",
+    moreSite: "Website",
+    moreWa: "WhatsApp · info and details",
+    moreIg: "Instagram",
     bookTitle: "Book the launch",
-    bookText: "Tipflow is launching soon. Book now: you pay nothing, we'll message you as soon as we open.",
+    bookText: "Tipflow is launching soon. Book now: you pay nothing, we'll message you on WhatsApp as soon as we open.",
     pack: (n: number, p: string) => `Pouch of ${n} filters · ${p}`,
     name: "Name",
     contact: "WhatsApp or email",
@@ -270,6 +278,14 @@ export function Prova(props: ProvaProps) {
             </div>
           )}
           {commentSent && <p className="p-ok">{t.commentDone}</p>}
+          {rating && (
+            <div className="p-more">
+              <p>{t.moreTitle}</p>
+              <a className="p-btn" href={`/vai/sito${from}`}>{t.moreSite}</a>
+              {props.hasWhatsapp && <a className="p-btn p-wa" href={`/vai/whatsapp${from}`}>{t.moreWa}</a>}
+              {props.hasInstagram && <a className="p-btn" href={`/vai/instagram${from}`}>{t.moreIg}</a>}
+            </div>
+          )}
         </section>
       )}
 

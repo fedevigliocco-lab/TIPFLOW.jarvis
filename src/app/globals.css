@@ -259,6 +259,8 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .p-done p { color: #b9b8b2; margin: 6px 0 0; }
 .p-done .p-tag { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
   color: var(--accent-ink); font-size: 26px; font-weight: 900; margin: 0 0 12px; }
+.p-more { display: grid; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(127,127,127,.25); }
+.p-more p { margin: 0 0 2px; font-weight: 700; }
 .p-share { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 .p-wa { background: #25d366; border-color: #25d366; color: #062b14; }
 .p-foot { color: var(--muted); font-size: 13px; padding-top: 28px; }

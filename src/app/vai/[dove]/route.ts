@@ -12,7 +12,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   if (!(LINK_KINDS as readonly string[]).includes(dove)) return NextResponse.redirect(back, 303);
 
   const db = await getDb();
-  const target = linkTarget(dove as LinkKind, await getSettings(db));
+  // Se in Jarvis non c'è un sito diverso, "Sito" porta al sito di Tipflow stesso.
+  const target = linkTarget(dove as LinkKind, await getSettings(db)) ?? (dove === "sito" ? new URL("/", request.url).toString() : null);
   if (!target) return NextResponse.redirect(back, 303);
 
   const visitor = await visitorFrom(request.headers);

@@ -13,7 +13,7 @@ describe("valuta", () => {
   });
 
   it("prezzo della busta e formato", () => {
-    expect(bagPrice({ prezzo: "20", prezzo_chf: "" }, "CHF")).toBe(20);
+    expect(bagPrice({ prezzo: "20", prezzo_chf: "" }, "CHF")).toBe(25);
     expect(bagPrice({ prezzo: "20", prezzo_chf: "19,90" }, "CHF")).toBe(19.9);
     expect(bagPrice({ prezzo: "", prezzo_chf: "" }, "EUR")).toBe(20);
     expect(formatPrice(20, "CHF", "it")).toBe("CHF 20.00");

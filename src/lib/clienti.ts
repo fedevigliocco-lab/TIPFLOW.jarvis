@@ -126,7 +126,7 @@ export async function getAssistenzaSettings(db: Db): Promise<Record<AssistenzaKe
     pagamento: get("pagamento"),
     istruzioni_assistenza: get("istruzioni_assistenza"),
     prezzo: get("prezzo") || "20",
-    prezzo_chf: get("prezzo_chf") || "20",
+    prezzo_chf: get("prezzo_chf") || "25",
     pezzi: get("pezzi") || "100",
     instagram: get("instagram"),
     sito: get("sito"),

@@ -163,7 +163,7 @@ export default async function TestQr({ searchParams }: { searchParams: Promise<{
         </label>
         <label>
           Prezzo in franchi, per chi visita dalla Svizzera
-          <input className="field" name="prezzo_chf" defaultValue={settings.prezzo_chf} inputMode="decimal" placeholder="20" />
+          <input className="field" name="prezzo_chf" defaultValue={settings.prezzo_chf} inputMode="decimal" placeholder="25" />
         </label>
         <label>
           Filtri nella busta
