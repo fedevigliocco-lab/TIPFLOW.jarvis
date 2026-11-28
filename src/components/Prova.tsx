@@ -211,7 +211,12 @@ export function Prova(props: ProvaProps) {
           <br />
           <span>{hook[1]}</span>
         </h1>
-        <Image src="/prova/filtro.png" alt="" width={467} height={78} className="p-filter" priority />
+        {/* Il filtro gira (WebP animato con trasparenza); chi ha "riduci movimento" vede la foto ferma. */}
+        <picture>
+          <source srcSet="/prova/filtro.png" media="(prefers-reduced-motion: reduce)" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/prova/filtro-gira.webp" alt="" width={880} height={147} className="p-filter" fetchPriority="high" />
+        </picture>
         <p className="p-lead">{props.fromFriend ? t.friendLead : t.lead}</p>
       </section>
 
